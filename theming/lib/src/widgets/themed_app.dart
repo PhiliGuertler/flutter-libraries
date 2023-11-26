@@ -37,12 +37,13 @@ class ThemedApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeSettingsProvider);
+    final defaultColor = ref.watch(defaultAppColorProvider);
 
     return DynamicColorBuilder(
       builder: (_, __) {
         final AppTheme appTheme = theme.maybeWhen(
           data: (data) => data,
-          orElse: () => const AppTheme(),
+          orElse: () => AppTheme(primaryColor: defaultColor),
         );
 
         final ColorScheme lightColorScheme = appTheme.computeColorScheme(true);

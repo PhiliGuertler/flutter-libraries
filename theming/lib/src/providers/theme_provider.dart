@@ -5,6 +5,10 @@ import 'package:theming/src/models/theme.dart';
 
 part 'theme_provider.g.dart';
 
+/// Override this provider in your app with your default app color
+@Riverpod(keepAlive: true)
+Color defaultAppColor(DefaultAppColorRef ref) => const Color(0xFFFF00FF);
+
 @Riverpod(keepAlive: true)
 class ThemeSettings extends _$ThemeSettings with Persistable {
   static const String storageKey = 'theme';
@@ -15,7 +19,8 @@ class ThemeSettings extends _$ThemeSettings with Persistable {
     if (storedJSON != null) {
       return AppTheme.fromJson(storedJSON);
     }
-    return const AppTheme();
+    final defaultColor = ref.watch(defaultAppColorProvider);
+    return AppTheme(primaryColor: defaultColor);
   }
 
   Future<void> setPrimaryColor(Color primaryColor) async {
@@ -31,9 +36,11 @@ class ThemeSettings extends _$ThemeSettings with Persistable {
 
   Future<void> setThemeMode(ThemeMode themeMode) async {
     state = await AsyncValue.guard(() async {
+      final defaultColor = ref.watch(defaultAppColorProvider);
       final AppTheme update = state.maybeWhen(
         data: (data) => data.copyWith(themeMode: themeMode),
-        orElse: () => AppTheme(themeMode: themeMode),
+        orElse: () =>
+            AppTheme(themeMode: themeMode, primaryColor: defaultColor),
       );
       await persistJSON(storageKey, update.toJson());
       return update;
@@ -42,9 +49,10 @@ class ThemeSettings extends _$ThemeSettings with Persistable {
 
   Future<void> setLocale(String? locale) async {
     state = await AsyncValue.guard(() async {
+      final defaultColor = ref.watch(defaultAppColorProvider);
       final AppTheme update = state.maybeWhen(
         data: (data) => data.copyWith(locale: locale),
-        orElse: () => AppTheme(locale: locale),
+        orElse: () => AppTheme(locale: locale, primaryColor: defaultColor),
       );
       await persistJSON(storageKey, update.toJson());
       return update;

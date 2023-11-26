@@ -19,7 +19,7 @@ class ColorIntConv implements JsonConverter<Color, int> {
 class AppTheme with _$AppTheme {
   const factory AppTheme({
     @Default(ThemeMode.system) ThemeMode themeMode,
-    @Default(Color(0xFF3B0000)) @ColorIntConv() Color primaryColor,
+    @ColorIntConv() required Color primaryColor,
     @Default(null) String? locale,
   }) = _AppTheme;
   const AppTheme._();

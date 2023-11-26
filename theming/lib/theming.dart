@@ -1,5 +1,6 @@
 export 'src/models/theme.dart' show AppTheme;
-export 'src/providers/theme_provider.dart' show themeSettingsProvider;
+export 'src/providers/theme_provider.dart'
+    show defaultAppColorProvider, themeSettingsProvider;
 export 'src/widgets/appearance_color_picker.dart' show AppearanceColorPicker;
 export 'src/widgets/brightness_selection_radio_group.dart'
     show BrightnessSelectionRadioGroup;
