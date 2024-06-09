@@ -189,7 +189,7 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.onSurface,
                       borderRadius: BorderRadius.circular(2.0),
                     ),
                     height: 2.0,

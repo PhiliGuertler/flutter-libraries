@@ -20,7 +20,7 @@ class Note extends StatelessWidget {
               BorderRadius.only(topRight: Radius.circular(creaseSize)),
         ),
         child: ColoredBox(
-          color: Theme.of(context).colorScheme.surfaceVariant,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
           child: Stack(
             children: [
               Positioned(
@@ -28,7 +28,7 @@ class Note extends StatelessWidget {
                 child: Material(
                   elevation: 5,
                   child: Container(
-                    color: Theme.of(context).colorScheme.surfaceVariant,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     width: creaseSize,
                     height: creaseSize,
                   ),

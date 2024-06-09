@@ -85,7 +85,7 @@ class SegmentedActionCard extends StatelessWidget {
               blurRadius: 1,
             ),
           ],
-          color: Theme.of(context).colorScheme.surfaceVariant,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
         ),
         child: Card(
           shape: const RoundedRectangleBorder(
@@ -135,9 +135,9 @@ class SegmentedActionCard extends StatelessWidget {
                 content = OpenContainer(
                   transitionDuration: const Duration(milliseconds: 500),
                   transitionType: ContainerTransitionType.fadeThrough,
-                  openColor: Theme.of(context).colorScheme.background,
+                  openColor: Theme.of(context).colorScheme.surface,
                   closedColor: item.tileColor ??
-                      Theme.of(context).colorScheme.background,
+                      Theme.of(context).colorScheme.surface,
                   closedShape: shape,
                   closedBuilder: (context, openContainer) => ListTile(
                     contentPadding: const EdgeInsets.symmetric(
