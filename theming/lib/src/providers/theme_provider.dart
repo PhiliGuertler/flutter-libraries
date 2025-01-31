@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:misc_utils/misc_utils.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:theming/src/models/theme.dart';
 
@@ -7,7 +8,7 @@ part 'theme_provider.g.dart';
 
 /// Override this provider in your app with your default app color
 @Riverpod(keepAlive: true)
-Color defaultAppColor(DefaultAppColorRef ref) => const Color(0xFFFF00FF);
+Color defaultAppColor(Ref ref) => const Color(0xFFFF00FF);
 
 @Riverpod(keepAlive: true)
 class ThemeSettings extends _$ThemeSettings with Persistable {
