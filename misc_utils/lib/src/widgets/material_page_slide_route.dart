@@ -37,5 +37,5 @@ class MaterialPageSlideRoute<T> extends PageRoute<T> {
   bool get maintainState => _materialPageRoute.maintainState;
 
   @override
-  Duration get transitionDuration => _materialPageRoute.transitionDuration;
+  Duration get transitionDuration => const Duration(milliseconds: 400);
 }
