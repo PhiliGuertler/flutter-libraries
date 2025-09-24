@@ -47,12 +47,12 @@ class _SwipeToTriggerState extends State<SwipeToTrigger>
     final unitVelocity = unitsPerSecond.distance;
 
     const spring = SpringDescription(
-      mass: 30,
-      stiffness: 40,
-      damping: 1,
+      mass: 1,
+      stiffness: 500,
+      damping: 50,
     );
 
-    final simulation = SpringSimulation(spring, 0, 1, -unitVelocity);
+    final simulation = SpringSimulation(spring, 0, 1, -unitVelocity, snapToEnd: true);
 
     _controller.animateWith(simulation);
   }
