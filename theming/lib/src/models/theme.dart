@@ -16,7 +16,7 @@ class ColorIntConv implements JsonConverter<Color, int> {
 }
 
 @freezed
-class AppTheme with _$AppTheme {
+abstract class AppTheme with _$AppTheme {
   const factory AppTheme({
     @Default(ThemeMode.system) ThemeMode themeMode,
     @ColorIntConv() required Color primaryColor,

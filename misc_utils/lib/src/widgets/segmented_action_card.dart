@@ -6,7 +6,7 @@ import 'package:misc_utils/src/utils/constants.dart';
 part 'segmented_action_card.freezed.dart';
 
 @freezed
-class SegmentedActionCardItem with _$SegmentedActionCardItem {
+abstract class SegmentedActionCardItem with _$SegmentedActionCardItem {
   const factory SegmentedActionCardItem({
     Key? key,
     Widget? title,
