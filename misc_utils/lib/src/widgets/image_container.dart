@@ -19,7 +19,7 @@ class ImageContainer extends StatelessWidget {
         width: imageSize,
         height: imageSize,
         color: backgroundColor ??
-            Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+            Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
         child: Center(child: child),
       ),
     );

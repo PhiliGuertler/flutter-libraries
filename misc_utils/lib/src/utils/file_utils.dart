@@ -94,7 +94,7 @@ class FileUtils {
     File file,
     String fileName,
     String dialogTitle,
-  ) async {
+  ) {
     if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
       return _exportFileDesktop(file, fileName, dialogTitle);
     } else {

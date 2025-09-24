@@ -12,7 +12,7 @@ class ColorIntConv implements JsonConverter<Color, int> {
   Color fromJson(int json) => Color(json);
 
   @override
-  int toJson(Color object) => object.value;
+  int toJson(Color object) => object.toARGB32();
 }
 
 @freezed

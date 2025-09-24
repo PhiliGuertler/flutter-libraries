@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:misc_utils/misc_utils.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:theming/src/models/theme.dart';
 

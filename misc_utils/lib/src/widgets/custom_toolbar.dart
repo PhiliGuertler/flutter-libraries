@@ -45,7 +45,7 @@ class CustomToolbar extends StatelessWidget {
                       overlayRadius,
                     ),
                     child: ColoredBox(
-                      color: themeColor.withOpacity(backgroundOpacity),
+                      color: themeColor.withValues(alpha: backgroundOpacity),
                       child: const BackButton(),
                     ),
                   ),
@@ -58,7 +58,7 @@ class CustomToolbar extends StatelessWidget {
           ? ClipRRect(
               borderRadius: BorderRadius.circular(overlayRadius),
               child: ColoredBox(
-                color: themeColor.withOpacity(backgroundOpacity),
+                color: themeColor.withValues(alpha: backgroundOpacity),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: DefaultTextStyle(
@@ -87,8 +87,8 @@ class CustomToolbar extends StatelessWidget {
                                 overlayRadius,
                               ),
                               child: Container(
-                                color: themeColor.withOpacity(
-                                  backgroundOpacity,
+                                color: themeColor.withValues(
+                                  alpha: backgroundOpacity,
                                 ),
                               ),
                             ),

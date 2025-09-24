@@ -119,7 +119,7 @@ class _SlideExpandableState extends State<SlideExpandable>
                 color: Theme.of(context)
                     .colorScheme
                     .primaryContainer
-                    .withOpacity(0.3),
+                    .withValues(alpha: 0.3),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return Stack(

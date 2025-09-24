@@ -40,7 +40,7 @@ class ThemedApp extends ConsumerWidget {
     final defaultColor = ref.watch(defaultAppColorProvider);
 
     return DynamicColorBuilder(
-      builder: (_, __) {
+      builder: (_, _) {
         final AppTheme appTheme = theme.maybeWhen(
           data: (data) => data,
           orElse: () => AppTheme(primaryColor: defaultColor),

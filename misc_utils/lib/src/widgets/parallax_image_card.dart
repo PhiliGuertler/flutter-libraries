@@ -73,9 +73,9 @@ class ParallaxImage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white.withOpacity(0.8),
-            Colors.white.withOpacity(0.8),
-            Colors.white.withOpacity(0.3),
+            Colors.white.withValues(alpha: 0.8),
+            Colors.white.withValues(alpha: 0.8),
+            Colors.white.withValues(alpha: 0.3),
             Colors.transparent,
           ],
           stops: const [0.0, 0.7, 0.9, 1.0],

@@ -224,8 +224,8 @@ class _SliverFancyImageAppBarDelegate extends SliverPersistentHeaderDelegate {
                         themeColor,
                         tintColor,
                         currentBackgroundBlend * 4.0,
-                      ).withOpacity(
-                        math.pow(currentBackgroundBlend, 5.0).toDouble(),
+                      ).withValues(
+                        alpha: math.pow(currentBackgroundBlend, 5.0).toDouble(),
                       ),
                       elevation: 4.0,
                       child: Padding(
