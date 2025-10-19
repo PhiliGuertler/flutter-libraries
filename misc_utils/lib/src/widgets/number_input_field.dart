@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,8 +17,8 @@ class FormattedNumberTextEditingController extends TextEditingController {
     required this.formatter,
     this.initialValue = 0.0,
     this.numDecimals = 2,
-  })  : _value = initialValue,
-        _displayText = formatter.format(initialValue) {
+  }) : _value = initialValue,
+       _displayText = formatter.format(initialValue) {
     text = formatter.format(_value);
     selection = TextSelection.fromPosition(TextPosition(offset: text.length));
     addListener(_listener);
@@ -34,18 +36,32 @@ class FormattedNumberTextEditingController extends TextEditingController {
       return;
     }
 
-    final bool shouldRemoveLastCharacter =
-        text.length == _displayText.length - 1;
+    // Use a digits-only string to determine the smallest currency unit
+    // (e.g. cents). This avoids relying on `String.length` which is measured
+    // in UTF-16 code units and breaks for multi-code-unit characters like
+    // emoji. However, if the user presses backspace and only a non-digit
+    // character (like an emoji or currency symbol) was removed, the digits
+    // string will be unchanged — we should interpret that backspace as
+    // removing the last digit.
+    String textNumberString = text.replaceAll(RegExp(r'\D'), '');
+    final String oldDigits = _displayText.replaceAll(RegExp(r'\D'), '');
 
-    // remove all non-digit characters from the string
-    String textNumberString = text.replaceAll(RegExp(r'[^\d]'), "");
-    if (shouldRemoveLastCharacter) {
-      textNumberString =
-          textNumberString.substring(0, textNumberString.length - 1);
+    // If lengths of digit-strings are the same but the visible text got
+    // shorter, the user most likely deleted a non-digit (emoji/currency
+    // char). Treat that as deleting one digit from the end.
+    if (textNumberString.length == oldDigits.length &&
+        text.length < _displayText.length) {
+      if (oldDigits.isNotEmpty) {
+        textNumberString = oldDigits.substring(0, oldDigits.length - 1);
+      } else {
+        textNumberString = '';
+      }
     }
-    // read text as int and divide it by 100
+
+    // read textNumberString as int (smallest unit, e.g. cents) and divide it by 10^numDecimals
     final textValue = int.tryParse(textNumberString) ?? 0;
-    _value = textValue * 0.01;
+    final divisor = pow(10, numDecimals);
+    _value = textValue / divisor;
     // Setting the text triggers another listener call, so we have to store the
     // updated value before re-triggering that to avoid stack overflows.
     _displayText = formatter.format(_value);
