@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -29,35 +28,25 @@ class FileUtils {
   }
 
   Future<File?> pickFile() async {
-    final FilePickerResult? pickedFile = await FilePicker.platform.pickFiles();
+    final pickedFile = await FilePicker.pickFile();
 
-    if (pickedFile != null && pickedFile.files.single.path != null) {
-      final File result = File(pickedFile.files.single.path!);
-      return result;
+    if (pickedFile?.path != null) {
+      return File(pickedFile!.path!);
     }
     return null;
   }
 
-  Future<bool> _exportFileDesktop(
+  Future<bool> _exportFile(
     File file,
     String fileName,
     String dialogTitle,
   ) async {
-    final String? outputFilePath = await FilePicker.platform.saveFile(
+    final outputFileUri = await FilePicker.saveFile(
       dialogTitle: dialogTitle,
       fileName: fileName,
+      bytes: await file.readAsBytes(),
     );
-
-    if (outputFilePath == null) {
-      // User cancelled the process
-      return false;
-    }
-
-    final fileContents = await file.readAsString();
-
-    final output = File(outputFilePath);
-    await output.writeAsString(fileContents);
-    return true;
+    return outputFileUri != null;
   }
 
   Future<bool> shareFile(File file, String fileName, String dialogTitle) async {
@@ -76,29 +65,11 @@ class FileUtils {
     return result.status == ShareResultStatus.success;
   }
 
-  Future<bool> _exportFileMobile(
-    File file,
-    String fileName,
-    String dialogTitle,
-  ) async {
-    final response = await FlutterFileDialog.saveFile(
-      params: SaveFileDialogParams(
-        fileName: fileName,
-        sourceFilePath: file.path,
-      ),
-    );
-    return response != null;
-  }
-
   Future<bool> exportFile(
     File file,
     String fileName,
     String dialogTitle,
   ) {
-    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-      return _exportFileDesktop(file, fileName, dialogTitle);
-    } else {
-      return _exportFileMobile(file, fileName, dialogTitle);
-    }
+    return _exportFile(file, fileName, dialogTitle);
   }
 }

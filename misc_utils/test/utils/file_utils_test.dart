@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:file_picker_platform_interface/file_picker_platform_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:misc_utils/misc_utils.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
@@ -10,10 +12,13 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late FakePathProviderPlatform mockPathProviderPlatform;
+    late FakeFilePickerPlatform mockFilePickerPlatform;
 
   setUp(() {
     mockPathProviderPlatform = FakePathProviderPlatform();
     PathProviderPlatform.instance = mockPathProviderPlatform;
+        mockFilePickerPlatform = FakeFilePickerPlatform();
+        FilePickerPlatform.instance = mockFilePickerPlatform;
   });
 
   test(
@@ -93,4 +98,76 @@ void main() {
     ]
 }""");
   });
+
+    test('exports the original bytes with the requested name and title', () async {
+        final file = File('test_resources/game-store.json');
+        mockFilePickerPlatform.saveResult = Uri.parse('content://saved/game-store.json');
+
+        final result = await FileUtils().exportFile(
+            file,
+            'game-store.json',
+            'Export games',
+        );
+
+        expect(result, isTrue);
+        expect(mockFilePickerPlatform.savedBytes, await file.readAsBytes());
+        expect(mockFilePickerPlatform.savedFileName, 'game-store.json');
+        expect(mockFilePickerPlatform.savedDialogTitle, 'Export games');
+    });
+
+    test('returns false when export is cancelled', () async {
+        final file = File('test_resources/game-store.json');
+
+        final result = await FileUtils().exportFile(
+            file,
+            'game-store.json',
+            'Export games',
+        );
+
+        expect(result, isFalse);
+    });
+
+    test('returns null when file selection is cancelled', () async {
+        expect(await FileUtils().pickFile(), isNull);
+    });
+}
+
+class FakeFilePickerPlatform extends FilePickerPlatform {
+    Uri? saveResult;
+    Uint8List? savedBytes;
+    String? savedFileName;
+    String? savedDialogTitle;
+
+    @override
+    Future<PlatformFile?> pickFile({
+        String? dialogTitle,
+        String? initialDirectory,
+        FileType type = FileType.any,
+        List<String>? allowedExtensions,
+        Function(FilePickerStatus)? onFileLoading,
+        int compressionQuality = 0,
+        AndroidOptions androidOptions = const AndroidOptions(),
+        DarwinOptions darwinOptions = const DarwinOptions(),
+        WindowsOptions windowsOptions = const WindowsOptions(),
+        LinuxOptions linuxOptions = const LinuxOptions(),
+        WebOptions webOptions = const WebOptions(),
+    }) async => null;
+
+    @override
+    Future<Uri?> saveFile({
+        required String fileName,
+        required Uint8List bytes,
+        required String mimeType,
+        String? dialogTitle,
+        String? initialDirectory,
+        Function(FilePickerStatus)? onFileSaving,
+        WindowsOptions windowsOptions = const WindowsOptions(),
+        LinuxOptions linuxOptions = const LinuxOptions(),
+        WebOptions webOptions = const WebOptions(),
+    }) async {
+        savedFileName = fileName;
+        savedBytes = bytes;
+        savedDialogTitle = dialogTitle;
+        return saveResult;
+    }
 }
